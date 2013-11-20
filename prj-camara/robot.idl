@@ -1,0 +1,109 @@
+module corba{
+
+  module khepera {
+  
+    module robot{
+      struct PosicionD{
+        float x;
+        float y;
+      };
+    };
+
+    module escenario{
+      struct RectanguloD{
+        float x;
+        float y;
+        float ancho;
+        float alto;
+        unsigned long color;
+      };
+
+      struct EscenarioD{
+          sequence<RectanguloD> recs;
+          unsigned long  nrecs;
+          unsigned long color;
+      };
+     };
+  };
+
+  module robot{
+    interface RobotSeguidorInt;
+  };
+
+  module instantanea{
+
+   struct PuntosRobotD{
+     corba::khepera::robot::PosicionD centro;
+     corba::khepera::robot::PosicionD sens[9];
+     corba::khepera::robot::PosicionD finsens[9];
+     corba::khepera::robot::PosicionD inter[8];
+    };
+
+    struct EstadoRobotD {
+      string nombre;
+      unsigned long id;
+      //Referencia en formato String IOR
+      string IORrob;
+      //Referencia en formato binario
+      corba::robot::RobotSeguidorInt refrob;
+      PuntosRobotD puntrob;
+      corba::khepera::robot::PosicionD posObj;
+      unsigned long idLider;
+    };
+
+     struct InstantaneaD{
+       sequence<EstadoRobotD> estadorobs;
+    };
+  };
+
+  module robot{
+    interface RobotSeguidorInt{
+       void ObtenerEstado(out corba::instantanea::EstadoRobotD est);
+       void ModificarEscenario(in corba::khepera::escenario::EscenarioD esc);// raises (CORBA::COMM_FAILURE);
+       void ModificarObjetivo(in corba::khepera::robot::PosicionD NuevoObj);
+       void ModificarPosicion(in corba::khepera::robot::PosicionD npos);
+       void ModificarLider(in unsigned long idLider);
+    };
+
+  };
+
+  module consola{
+    interface ConsolaInt{
+       void ModificarEscenario(in corba::khepera::escenario::EscenarioD esc);
+       boolean estoyviva();
+    };
+  };
+
+  module camara{
+
+     struct IPYPortD{
+        string ip;
+        unsigned long port;
+     };
+
+     struct suscripcionD{
+         unsigned long id;
+         IPYPortD iport;
+         corba::khepera::escenario::EscenarioD esc;
+     };
+
+     struct ListaSuscripcionD{
+       //IORs en formato string
+       sequence<string> IORrobots;
+       sequence<string> IORconsolas;
+     };
+
+     interface CamaraInt{
+        suscripcionD SuscribirRobot(in string IORrob);
+        suscripcionD SuscribirConsola(in string IORcons);
+        void BajaRobot(in string IORrob);
+        void BajaConsola(in string IORcons);
+        ListaSuscripcionD ObtenerLista();
+        IPYPortD ObtenerIPYPortDifusion();
+        corba::instantanea::InstantaneaD ObtenerInstantanea();
+        void ModificarEscenario(in corba::khepera::escenario::EscenarioD esc);
+        corba::khepera::escenario::EscenarioD ObtenerEscenario();
+     };
+  };
+};
+
