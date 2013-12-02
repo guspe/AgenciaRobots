@@ -62,9 +62,9 @@ public class CamaraIntServerImpl extends corba.camara.CamaraIntPOA {
 		Escenario esc;
 		try {
 			// esc = new
-			// Escenario("C:/Users/bogdan/Documents/University/6/DYA/BigPro/laberinto");
+			// Escenario("C:/Users/bogdan/Documents/University/6/DYA/BigPro/prj-camara/lib/laberinto");
 			esc = new Escenario(
-					"C:/Users/bogdan/Documents/University/6/DYA/BigPro/dibujo");
+					"C:/Users/bogdan/Documents/University/6/DYA/BigPro/prj-camara/lib/dibujo");
 			this.escenario = esc.toEscenarioD();
 
 		} catch (FileNotFoundException e) {
