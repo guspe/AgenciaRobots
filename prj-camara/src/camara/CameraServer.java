@@ -1,7 +1,5 @@
 package camara;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+
 import java.util.Properties;
 
 import org.omg.CosNaming.NamingContextExt;
@@ -17,9 +15,8 @@ import corba.camara.*;
 
 
 public class CameraServer {
-	/*MODIFICADO*/
+
 	private static corba.camara.IPYPortD ipyport;
-	/*FIN MODIFICADO*/
 	
 	public static void main(String[] args) {
 
@@ -34,8 +31,7 @@ public class CameraServer {
 		
 		
 		/*MODIFICADO*/
-		System.out.println("Para servicio de nombres Orbacus en localhost:1111 utilice como parametros de ejecucion:");
-		System.out.println("-ORBInitRef NameService=corbaloc::localhost:1111/NameService 228.7.7.8 7011");
+		System.out.println("suscribiendose en el NameServive localhost:1111.");
 		System.out.println("Para cambio canal difusion: args[3]-> ip args[4]-> port");
 		if (args.length==4)
 			ipyport = new IPYPortD( args[2], Integer.parseInt(args[3]) );
@@ -64,9 +60,7 @@ public class CameraServer {
 			POA poa = poaRoot.create_POA("CamaraIntServerImpl_poa",	poaRoot.the_POAManager(), policies);
 
 			// Create the servant
-			/*MODIFICADO*/
 			CamaraIntServerImpl servant = new CamaraIntServerImpl(orb,poa,ipyport);
-			/*FIN MODIFICADO*/
 
 			// Activate the servant with the ID on myPOA
 			byte[] objectId = "Camara".getBytes();
@@ -78,19 +72,12 @@ public class CameraServer {
 			// Get a reference to the servant and write it down.
 			obj = poa.servant_to_reference(servant);
 
-			// ---- Uncomment below to enable Naming Service access. ----
 			 org.omg.CORBA.Object ncobj = orb.resolve_initial_references("NameService");
 			 NamingContextExt nc = NamingContextExtHelper.narrow(ncobj);
 			 nc.rebind(nc.to_name("Camara"), obj);
 
-			//PrintWriter ps = new PrintWriter(new FileOutputStream(new File("server.ior")));
-			//ps.println(orb.object_to_string(obj));
-			//ps.close();
-			 
-				/*FIN MODIFICADO*/
-				servant.start();
-				/*FIN MODIFICADO*/
-				
+			servant.start();
+
 			System.out.println("Camara Server ready...");
 
 			// Wait for incoming requests
