@@ -12,6 +12,7 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.PortableServer.ThreadPolicyValue;
 
 import corba.camara.*;
+import corba.robot.RobotSeguidorIntHelper;
 
 public class RobotSeguidor {
 
@@ -75,6 +76,7 @@ public class RobotSeguidor {
 
 					servant.orb = orb;
 		          	servant.camara = camara;
+		          	
 		          	if (args.length>0) servant.minombre = args[0]; else servant.minombre="Robot";
 		          	ok=1;
 		        }  catch (NotFound e1) {
@@ -90,7 +92,7 @@ public class RobotSeguidor {
 		      servant.start();
 	
 			
-			System.out.println("CORBA Server ready...");
+			System.out.println("CORBA Robot ready...");
 
 			// Wait for incoming requests
 			orb.run();

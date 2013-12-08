@@ -15,6 +15,7 @@ import corba.instantanea.EstadoRobotDHolder;
 import corba.instantanea.InstantaneaD;
 import corba.khepera.escenario.EscenarioD;
 import corba.khepera.robot.PosicionD;
+import corba.robot.RobotSeguidorIntHelper;
 
 /**
  * This class is the implemetation object for your IDL interface.
@@ -30,7 +31,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
     int miid;
     String miIOR;
     
-    public corba.robot.RobotSeguidorInt refrob = null; //referencia al robot 
+    public corba.robot.RobotSeguidorInt refrob = RobotSeguidorIntHelper.narrow(orb.string_to_object(miIOR)); //referencia al robot 
     public corba.instantanea.PuntosRobotD puntrob = null; //puntos donde se encuentra el robot
     public corba.khepera.robot.PosicionD posObj = null; //posicion del objetivo del robot
     private int idLider = -1; // robot lider
@@ -42,6 +43,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
 	private Trayectoria tra; 
 	private Destino dst = new Destino(); 
 	private Braitenberg bra = new Braitenberg();
+	
 	/**
 	 * Constructor for RobotSeguidorIntServerImpl 
 	 */
@@ -50,7 +52,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
 	
 	@Override
 	public void ObtenerEstado(EstadoRobotDHolder est) {
-
+				
 		corba.instantanea.EstadoRobotD _r = new corba.instantanea.EstadoRobotD();
 		_r.nombre = this.minombre;
 		_r.id = this.miid;
@@ -85,6 +87,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
 		this.idLider = idLider;
 	}
 	
+	//TODO: Esta llamada tiene que estar sincronizada porque es posible llamarla en mitad de la ejecucion del movimiento 
 	private void resetRobot(){
 		this.posObj = new PosicionD(10, 10);
 		this.r = new RobotKhepera(new PosicionD(10, 10), new Escenario(this.escenario), 0);
