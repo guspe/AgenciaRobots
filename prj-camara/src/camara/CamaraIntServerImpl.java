@@ -131,6 +131,13 @@ public class CamaraIntServerImpl extends corba.camara.CamaraIntPOA {
 		return this.ipyport;
 	}
 
+	//Me he creado un metodo para obtener la lista de robots
+	public ArrayList<String> obtenerListaRobots()
+	{
+		ArrayList<String> robots = new ArrayList<String>(this.listaRobots);
+		return robots;
+	}
+	
 	@Override
 	public InstantaneaD ObtenerInstantanea() {
 		return this.instantanea;
