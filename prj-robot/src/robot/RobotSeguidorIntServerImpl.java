@@ -73,6 +73,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
 
 	@Override
 	public void ModificarObjetivo(PosicionD NuevoObj) {
+		this..idLider = -1; //reset del lider
 		this.posObj= NuevoObj;
 	}
 
