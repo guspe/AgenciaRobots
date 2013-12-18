@@ -31,7 +31,7 @@ public class RobotSeguidorIntServerImpl extends corba.robot.RobotSeguidorIntPOA 
     int miid;
     String miIOR;
     
-    public corba.robot.RobotSeguidorInt refrob = RobotSeguidorIntHelper.narrow(orb.string_to_object(miIOR)); //referencia al robot 
+    public corba.robot.RobotSeguidorInt refrob = null; //referencia al robot 
     public corba.instantanea.PuntosRobotD puntrob = null; //puntos donde se encuentra el robot
     public corba.khepera.robot.PosicionD posObj = null; //posicion del objetivo del robot
     private int idLider = -1; // robot lider
